@@ -57,6 +57,7 @@ This function loads collection from JSON file.
 
 Parameters:
 * file - file to load from
+* defaultPrefix - optional default prefix in case if JSON file does not have it
 
 Returns:
 * boolean - true on success, false on failure

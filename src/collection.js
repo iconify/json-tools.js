@@ -157,12 +157,13 @@ class Collection {
      * Load collection from file asynchronously
      *
      * @param {string} file File to load from
+     * @param {string} [defaultPrefix] Default prefix if collection does not have one
      * @returns {Promise}
      */
-    loadFromFileAsync(file) {
+    loadFromFileAsync(file, defaultPrefix) {
         return new Promise((fulfill, reject) => {
             // Get default prefix from filename
-            let defaultPrefix = file.split(/[\\/]/).pop().split('.').shift();
+            defaultPrefix = defaultPrefix === void 0 ? file.split(/[\\/]/).pop().split('.').shift() : defaultPrefix;
 
             // Load file
             fs.readFile(file, 'utf8', (err, data) => {
@@ -183,12 +184,13 @@ class Collection {
      * Load collection from file synchronously
      *
      * @param {string} file File to load from
+     * @param {string} [defaultPrefix] Default prefix if collection does not have one
      * @returns {boolean}
      */
-    loadFromFile(file) {
+    loadFromFile(file, defaultPrefix) {
         try {
             // Get default prefix from filename
-            let defaultPrefix = file.split(/[\\/]/).pop().split('.').shift();
+            defaultPrefix = defaultPrefix === void 0 ? file.split(/[\\/]/).pop().split('.').shift() : defaultPrefix;
 
             // Load file
             let data = fs.readFileSync(file, 'utf8');
