@@ -2,7 +2,7 @@
   "name": "@iconify/json-tools",
   "description": "Functions for manipulating Iconify JSON SVG collections.",
   "author": "Vjacheslav Trushkin",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0",
   "license": "MIT",
   "bugs": "https://github.com/iconify-design/json-tools.js/issues",
   "homepage": "https://github.com/iconify-design/json-tools.js",
