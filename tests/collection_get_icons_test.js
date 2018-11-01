@@ -43,8 +43,9 @@
                 aliases: {}
             });
 
-            // Same, but optimized
-            items = collection.getIcons(['arrows', 'asterisk'], true);
+            // Same, but using optimized JSON. Result should have all default values
+            expect(collection.loadFromFile(__dirname + '/fixtures/test1-optimized.json')).to.be.equal(true);
+            items = collection.getIcons(['arrows', 'asterisk']);
             expect(items).to.be.eql({
                 prefix: 'fa',
                 icons: {
@@ -56,14 +57,15 @@
                     },
                     asterisk: {
                         "body": "<path d=\"M1386 922q46 26 59.5 77.5T1433 1097l-64 110q-26 46-77.5 59.5T1194 1254l-266-153v307q0 52-38 90t-90 38H672q-52 0-90-38t-38-90v-307l-266 153q-46 26-97.5 12.5T103 1207l-64-110q-26-46-12.5-97.5T86 922l266-154L86 614q-46-26-59.5-77.5T39 439l64-110q26-46 77.5-59.5T278 282l266 153V128q0-52 38-90t90-38h128q52 0 90 38t38 90v307l266-153q46-26 97.5-12.5T1369 329l64 110q26 46 12.5 97.5T1386 614l-266 154z\" fill=\"currentColor\"/>",
-                        "width": 1472,
-                        "height": 1536,
-                        "inlineTop": -128
+                        "width": 1472
                     }
                 },
-                // aliases object is removed when optimizing
+                aliases: {},
+                width: 1536,
+                height: 1536,
                 inlineHeight: 1792,
-                verticalAlign: -0.143
+                verticalAlign: -0.143,
+                inlineTop: -128
             });
 
             // Get icons that do not exist
@@ -71,7 +73,12 @@
             expect(items).to.be.eql({
                 prefix: 'fa',
                 icons: {},
-                aliases: {}
+                aliases: {},
+                width: 1536,
+                height: 1536,
+                inlineHeight: 1792,
+                verticalAlign: -0.143,
+                inlineTop: -128
             });
 
             // Alias and item that does not exist
@@ -83,9 +90,7 @@
                         "body": "<path d=\"M1472 736v128q0 53-32.5 90.5T1355 992H651l293 294q38 36 38 90t-38 90l-75 76q-37 37-90 37-52 0-91-37L37 890Q0 853 0 800q0-52 37-91L688 59q38-38 91-38 52 0 90 38l75 74q38 38 38 91t-38 91L651 608h704q52 0 84.5 37.5T1472 736z\" fill=\"currentColor\"\/>",
                         "width": 1472,
                         "height": 1600,
-                        "inlineTop": -160,
-                        "inlineHeight": 1792,
-                        "verticalAlign": -0.143
+                        "inlineTop": -160
                     }
                 },
                 aliases: {
@@ -93,7 +98,12 @@
                         "parent": "arrow-left",
                         "hFlip": true
                     }
-                }
+                },
+                width: 1536,
+                height: 1536,
+                inlineHeight: 1792,
+                verticalAlign: -0.143,
+                inlineTop: -128
             });
         });
     });

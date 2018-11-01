@@ -53,7 +53,7 @@ class Collection {
      * @param {string} [prefix] Optional prefix
      */
     constructor(prefix) {
-        this._items = typeof prefix === 'string' ? {
+        this.items = typeof prefix === 'string' ? {
             prefix: prefix,
             icons: {}
         } : null;
@@ -65,7 +65,7 @@ class Collection {
      * @returns {string|false}
      */
     prefix() {
-        return this._items === null ? false : this._items.prefix;
+        return this.items === null ? false : this.items.prefix;
     }
 
     /**
@@ -221,9 +221,6 @@ class Collection {
             return false;
         }
 
-        // DeOptimize
-        Collection.deOptimize(data);
-
         // Collection does not have prefix - attempt to detect it
         // All icons in collection must have same prefix and its preferred if prefix is set
         if (data.prefix === void 0 || data.prefix === '') {
@@ -293,7 +290,7 @@ class Collection {
         }
 
         // Success
-        this._items = data;
+        this.items = data;
         return true;
     }
 
@@ -331,31 +328,28 @@ class Collection {
      * Get icons data (ready to be saved as JSON)
      *
      * @param {Array|null} [icons]
-     * @param {boolean} [optimize]
      * @returns {object|null}
      */
-    getIcons(icons, optimize) {
-        if (this._items === null) {
+    getIcons(icons) {
+        if (this.items === null) {
             return null;
         }
 
         let result;
         if (icons === null || icons === void 0) {
-            result = JSON.parse(JSON.stringify(this._items));
+            result = this.items;
         } else {
             this._result = {
-                prefix: this._items.prefix,
+                prefix: this.items.prefix,
                 icons: {},
                 aliases: {}
             };
+            this._addDefaultValues(this._result);
 
             icons.forEach(icon => this._copy(icon, 0));
             result = this._result;
         }
 
-        if (optimize) {
-            Collection.optimize(result);
-        }
         return result;
     }
 
@@ -371,18 +365,32 @@ class Collection {
         if (iteration > 5 || this._result.icons[name] !== void 0 || this._result.aliases[name] !== void 0) {
             return true;
         }
-        if (this._items.icons[name] !== void 0) {
-            this._result.icons[name] = this._items.icons[name];
+        if (this.items.icons[name] !== void 0) {
+            this._result.icons[name] = this.items.icons[name];
             return true;
         }
-        if (this._items.aliases && this._items.aliases[name] !== void 0) {
-            if (!this._copy(this._items.aliases[name].parent, iteration + 1)) {
+        if (this.items.aliases && this.items.aliases[name] !== void 0) {
+            if (!this._copy(this.items.aliases[name].parent, iteration + 1)) {
                 return false;
             }
-            this._result.aliases[name] = this._items.aliases[name];
+            this._result.aliases[name] = this.items.aliases[name];
             return true;
         }
         return false;
+    }
+
+    /**
+     * Add default values for icon or collection.
+     *
+     * @param {object} data
+     * @private
+     */
+    _addDefaultValues(data) {
+        Object.keys(this.items).forEach(key => {
+            if (data[key] === void 0 && (typeof this.items[key] === 'boolean' || typeof this.items[key] === 'number')) {
+                data[key] = this.items[key];
+            }
+        });
     }
 
     /**
@@ -393,31 +401,35 @@ class Collection {
      * @returns {object|null}
      */
     getIconData(name) {
-        if (this._items.icons[name] !== void 0) {
-            return Collection.addMissingAttributes(this._items.icons[name]);
+        if (this.items.icons[name] !== void 0) {
+            let data = Object.assign({}, this.items.icons[name]);
+            this._addDefaultValues(data);
+            return Collection.addMissingAttributes(data);
         }
 
         // Alias
-        if (this._items.aliases === void 0 || this._items.aliases[name] === void 0) {
+        if (this.items.aliases === void 0 || this.items.aliases[name] === void 0) {
             return null;
         }
-        this._result = Object.assign({}, this._items.aliases[name]);
+        this._result = Object.assign({}, this.items.aliases[name]);
 
-        let parent = this._items.aliases[name].parent,
+        let parent = this.items.aliases[name].parent,
             iteration = 0;
 
         while (iteration < 5) {
-            if (this._items.icons[parent] !== void 0) {
+            if (this.items.icons[parent] !== void 0) {
                 // Merge with icon
-                this._mergeIcon(this._items.icons[parent]);
+                let icon = Object.assign({}, this.items.icons[parent]);
+                this._addDefaultValues(icon);
+                this._mergeIcon(icon);
                 return Collection.addMissingAttributes(this._result);
             }
 
-            if (this._items.aliases[parent] === void 0) {
+            if (this.items.aliases[parent] === void 0) {
                 return null;
             }
-            this._mergeIcon(this._items.aliases[parent]);
-            parent = this._items.aliases[parent].parent;
+            this._mergeIcon(this.items.aliases[parent]);
+            parent = this.items.aliases[parent].parent;
             iteration ++;
         }
         return null;
@@ -477,7 +489,7 @@ class Collection {
      * @returns {boolean}
      */
     iconExists(name) {
-        return this._items === null ? false : (this._items.icons[name] !== void 0 || (this._items.aliases !== void 0 && this._items.aliases[name] !== void 0));
+        return this.items === null ? false : (this.items.icons[name] !== void 0 || (this.items.aliases !== void 0 && this.items.aliases[name] !== void 0));
     }
 
     /**
@@ -487,13 +499,13 @@ class Collection {
      * @returns {Array}
      */
     listIcons(includeAliases) {
-        if (this._items === null) {
+        if (this.items === null) {
             return [];
         }
 
-        let result = Object.keys(this._items.icons);
-        if (includeAliases && this._items.aliases !== void 0) {
-            result = result.concat(Object.keys(this._items.aliases));
+        let result = Object.keys(this.items.icons);
+        if (includeAliases && this.items.aliases !== void 0) {
+            result = result.concat(Object.keys(this.items.aliases));
         }
 
         return result;
@@ -506,24 +518,24 @@ class Collection {
      * @param {boolean} [checkAliases]
      */
     removeIcon(icon, checkAliases) {
-        if (this._items === null) {
+        if (this.items === null) {
             return;
         }
 
         // Remove icon
-        if (this._items.icons[icon] !== void 0) {
-            delete this._items.icons[icon];
-        } else if (this._items.aliases !== void 0 && this._items.aliases[icon] !== void 0) {
-            delete this._items.aliases[icon];
+        if (this.items.icons[icon] !== void 0) {
+            delete this.items.icons[icon];
+        } else if (this.items.aliases !== void 0 && this.items.aliases[icon] !== void 0) {
+            delete this.items.aliases[icon];
         } else {
             return;
         }
 
         // Check aliases
-        if (checkAliases !== false && this._items.aliases !== void 0) {
+        if (checkAliases !== false && this.items.aliases !== void 0) {
             let list = [];
-            Object.keys(this._items.aliases).forEach(key => {
-                if (this._items.aliases[key].parent === icon) {
+            Object.keys(this.items.aliases).forEach(key => {
+                if (this.items.aliases[key].parent === icon) {
                     list.push(key);
                 }
             });
@@ -566,6 +578,21 @@ class Collection {
     }
 
     /**
+     * Set default value for all icons
+     *
+     * @param {string} key
+     * @param {number|boolean} value
+     */
+    setDefaultIconValue(key, value) {
+        if (this.items === null) {
+            return;
+        }
+        if (typeof value === 'number' || typeof value === 'boolean') {
+            this.items[key] = value;
+        }
+    }
+
+    /**
      * Add item
      *
      * @param {string} name
@@ -575,16 +602,16 @@ class Collection {
      * @private
      */
     _add(name, data, alias) {
-        if (this._items === null) {
+        if (this.items === null) {
             return false;
         }
 
-        if (alias && this._items.aliases === void 0) {
-            this._items.aliases = {};
+        if (alias && this.items.aliases === void 0) {
+            this.items.aliases = {};
         }
-        this._items[alias ? 'aliases' : 'icons'][name] = data;
-        if (!alias && this._items.aliases) {
-            delete this._items.aliases[name];
+        this.items[alias ? 'aliases' : 'icons'][name] = data;
+        if (!alias && this.items.aliases) {
+            delete this.items.aliases[name];
         }
 
         return true;
@@ -593,18 +620,21 @@ class Collection {
     /**
      * Convert to Iconify script
      *
-     * @param options Options
+     * @param {object} [options] Options
      * @returns {string}
      */
     scriptify(options) {
-        if (this._items === null) {
+        if (this.items === null) {
             return '';
         }
 
         options = Object.assign({}, defaultScriptifyOptions, typeof options === 'object' ? options : {});
 
         // Get JSON data
-        let json = this.getIcons(options.icons, options.optimize);
+        let json = this.getIcons(options.icons);
+        if (options.optimize) {
+            Collection.optimize(json);
+        }
         json = options.pretty ? JSON.stringify(json, null, '\t') : JSON.stringify(json);
 
         // Wrap in callback

@@ -11,7 +11,7 @@
     describe('Getting icons data', () => {
         it('get FontAwesome icons', () => {
             let collection = new Collection();
-            expect(collection.loadFromFile(__dirname + '/fixtures/test1.json')).to.be.equal(true);
+            expect(collection.loadFromFile(__dirname + '/fixtures/test1-optimized.json')).to.be.equal(true);
 
             // Test "fa-arrows"
             let icon = collection.getIconData('arrows');

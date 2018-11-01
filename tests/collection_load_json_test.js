@@ -322,13 +322,10 @@
             let items = collection.getIcons();
             expect(items.icons.bar).to.be.eql({
                 body: '<bar />',
-                height: 20,
-                width: 30
+                height: 20
             });
             expect(items.icons.baz).to.be.eql({
-                body: '<baz />',
-                height: 40,
-                width: 30
+                body: '<baz />'
             });
         });
     });

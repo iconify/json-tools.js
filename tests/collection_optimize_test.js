@@ -11,14 +11,18 @@
     describe('JSON optimization', () => {
         it('optimizing FontAwesome JSON', () => {
             // Get data from test1.json
-            let original = fs.readFileSync(__dirname + '/fixtures/test1.json', 'utf8');
+            let original = fs.readFileSync(__dirname + '/fixtures/test1.json', 'utf8'),
+                preOptimized = fs.readFileSync(__dirname + '/fixtures/test1-optimized.json', 'utf8');
+
             original = JSON.parse(original);
+            preOptimized = JSON.parse(preOptimized);
 
             // Optimize it
             let optimized = JSON.parse(JSON.stringify(original));
             Collection.optimize(optimized);
 
             expect(optimized).to.not.be.eql(original);
+            expect(optimized).to.be.eql(preOptimized);
 
             // Test verticalAlign
             expect(optimized.verticalAlign).to.be.equal(-0.143);

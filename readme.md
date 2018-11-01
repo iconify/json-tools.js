@@ -157,10 +157,9 @@ This function returns JSON data for selected icons. If used without parameters, 
 
 Parameters:
 * icons - array of icons
-* optimize - optional boolean parameter. If true, common values will be moved to root object, making JSON data smaller. Set to true when using script during development to make JSON files smaller, set to false to avoid unnecessary overhead if using script at run time
 
 ```
-let data = collection.getIcons(['arrow-left', 'arrow-right', 'home'], true);
+let data = collection.getIcons(['arrow-left', 'arrow-right', 'home']);
 fs.writeFileSync('bundle.json', JSON.stringify(data), 'utf8');
 ```
 
@@ -171,6 +170,11 @@ let data = collection.getIcons();
 let newCollection = new Collection();
 newCollection.loadJSON(data);
 ```
+
+Using collection.getIcons() without parameters is same as accessing collection.items object.
+
+Warning: if you use getIcons() without parameters, editing result object will affect data stored in collection instance.
+getIcons() does not make a copy of object if you request entire collection. This does not apply to PHP version of this library.
 
 #### scriptify()
 
@@ -249,6 +253,18 @@ collection.addAlias('arrow-right', 'arrow-left', {
 collection.addAlias('arrow-right-alias', 'arrow-right');
 ```
 
+### setDefaultIconValue()
+
+Set default value for all icons.
+
+Parameters:
+* key - attribute name
+* value - default value
+
+```
+collection.setDefaultIconValue('verticalAlign', -0.143);
+```
+
 ### removeIcon()
 
 Removes icon or alias from collection.
@@ -296,6 +312,11 @@ console.log('Available icons in vaadin collection:', collection.listIcons(true))
 ```
 
 ### Other functions
+
+#### items
+
+This is a property, not function. You can use it to have access to raw JSON data. Value is same as using getIcons()
+without parameters.
 
 #### prefix()
 
