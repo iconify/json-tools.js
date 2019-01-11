@@ -74,12 +74,12 @@ class SVG {
     }
 
     /**
-     * Generate SVG
+     * Get SVG attributes
      *
      * @param {object} props Custom properties (same as query string in Iconify API)
      * @returns {string}
      */
-    getSVG(props) {
+    getAttributes(props) {
         let item = this._item;
         if (typeof props !== 'object') {
             props = {};
@@ -96,7 +96,7 @@ class SVG {
             hFlip: item.hFlip,
             vFlip: item.vFlip
         };
-        let style = '';
+        let style = {};
 
         let attributes = {};
 
@@ -250,7 +250,7 @@ class SVG {
 
         // Add vertical-align for inline icon
         if (inline && item.verticalAlign !== 0) {
-            style += 'vertical-align: ' + item.verticalAlign + 'em;';
+            style['vertical-align'] = item.verticalAlign + 'em';
         }
 
         // Check custom alignment
@@ -279,12 +279,6 @@ class SVG {
             });
         }
 
-        // Add 360deg transformation to style to prevent subpixel rendering bug
-        style += '-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);';
-
-        // Style attribute
-        attributes.style = style;
-
         // Generate viewBox and preserveAspectRatio attributes
         attributes.preserveAspectRatio = _align(align);
         attributes.viewBox = box.left + ' ' + box.top + ' ' + box.width + ' ' + box.height;
@@ -303,13 +297,42 @@ class SVG {
             body += '<rect x="' + box.left + '" y="' + box.top + '" width="' + box.width + '" height="' + box.height + '" fill="rgba(0, 0, 0, 0)" />';
         }
 
+        return {
+            attributes: attributes,
+            body: body,
+            style: style
+        };
+    }
+
+    /**
+     * Generate SVG
+     *
+     * @param {object} props Custom properties (same as query string in Iconify API)
+     * @returns {string}
+     */
+    getSVG(props) {
+        let data = this.getAttributes(props);
+
         let svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"';
-        Object.keys(attributes).forEach(attr => {
-            svg += ' ' + attr + '="' + attributes[attr] + '"';
+        Object.keys(data.attributes).forEach(attr => {
+            svg += ' ' + attr + '="' + data.attributes[attr] + '"';
         });
-        svg += '>' + body + '</svg>';
+
+        // Add style with 360deg transformation to style to prevent subpixel rendering bug
+        svg += ' style="';
+        Object.keys(data.style).forEach(attr => {
+            svg += attr += ': ' + data.style[attr] + '; ';
+        });
+        svg += '-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);';
+        if (props.style !== void 0) {
+            svg += props.style;
+        }
+        svg += '">';
+
+        svg += data.body + '</svg>';
 
         return svg;
+
     }
 
     /**

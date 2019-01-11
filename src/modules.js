@@ -11,5 +11,6 @@
 
 module.exports = {
     Collection: require('./collection'),
+    Normalize: require('./normalize'),
     SVG: require('./svg')
 };

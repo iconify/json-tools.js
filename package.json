@@ -2,7 +2,7 @@
   "name": "@iconify/json-tools",
   "description": "Functions for manipulating Iconify JSON SVG collections.",
   "author": "Vjacheslav Trushkin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "bugs": "https://github.com/iconify-design/json-tools.js/issues",
   "homepage": "https://github.com/iconify-design/json-tools.js",
@@ -15,8 +15,13 @@
     "test": "mocha tests/*_test.js"
   },
   "devDependencies": {
+    "@iconify/json": "^1.0.43",
     "chai": "^4.2.0",
-    "mocha": "^5.2.0",
-    "@iconify/json": "*"
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "JSONStream": "^1.3.5",
+    "event-stream": "^4.0.1",
+    "json-eval": "^1.0.5"
   }
 }
