@@ -440,4 +440,4 @@ svg.getSVG({
 
 Library is released with MIT license.
 
-© 2018 Vjacheslav Trushkin
+© 2018, 2019 Vjacheslav Trushkin
