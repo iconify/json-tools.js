@@ -22,8 +22,15 @@ let idCounter = 0;
  * @type {RegExp}
  * @private
  */
-const _unitsSplit = /(-?[0-9.]*[0-9]+[0-9.]*)/g,
-    _unitsTest = /^-?[0-9.]*[0-9]+[0-9.]*$/g;
+const unitsSplit = /(-?[0-9.]*[0-9]+[0-9.]*)/g;
+const unitsTest = /^-?[0-9.]*[0-9]+[0-9.]*$/g;
+
+/**
+ * Attributes used for icon
+ *
+ * @type {string[]}
+ */
+const iconAttributes = ['width', 'height', 'inline', 'hFlip', 'vFlip', 'flip', 'rotate', 'align', 'color', 'box'];
 
 /**
  * Get preserveAspectRatio attribute value
@@ -32,7 +39,7 @@ const _unitsSplit = /(-?[0-9.]*[0-9]+[0-9.]*)/g,
  * @return {string}
  * @private
  */
-function _align(align) {
+function getAlignment(align) {
     let result;
     switch (align.horizontal) {
         case 'left':
@@ -280,7 +287,7 @@ class SVG {
         }
 
         // Generate viewBox and preserveAspectRatio attributes
-        attributes.preserveAspectRatio = _align(align);
+        attributes.preserveAspectRatio = getAlignment(align);
         attributes.viewBox = box.left + ' ' + box.top + ' ' + box.width + ' ' + box.height;
 
         // Generate body
@@ -308,12 +315,24 @@ class SVG {
      * Generate SVG
      *
      * @param {object} props Custom properties (same as query string in Iconify API)
+     * @param {boolean} [addExtra] True if extra attributes should be added to SVG.
+     *  Due to lack of functions in JavaScript for escaping attributes, it is your job to make sure key and value are both properly escaped. Default value is false.
      * @returns {string}
      */
-    getSVG(props) {
-        let data = this.getAttributes(props);
+    getSVG(props, addExtra) {
+        let attributes = SVG.splitAttributes(props),
+            data = this.getAttributes(attributes.icon);
 
         let svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"';
+
+        // Add extra attributes - assume that their names and values are escaped
+        if (addExtra) {
+            Object.keys(attributes.node).forEach(attr => {
+                svg += ' ' + attr + '="' + attributes.node[attr] + '"';
+            });
+        }
+
+        // Add SVG attributes
         Object.keys(data.attributes).forEach(attr => {
             svg += ' ' + attr + '="' + data.attributes[attr] + '"';
         });
@@ -333,6 +352,25 @@ class SVG {
 
         return svg;
 
+    }
+
+    /**
+     * Split attributes
+     *
+     * @param props
+     * @return {{icon: {}, node: {}}}
+     */
+    static splitAttributes(props) {
+        let result = {
+            icon: {},
+            node: {}
+        };
+
+        Object.keys(props).forEach(name => {
+            result[iconAttributes.indexOf(name) === -1 ? 'node' : 'icon'][name] = props[name];
+        });
+
+        return result;
     }
 
     /**
@@ -356,13 +394,13 @@ class SVG {
         }
 
         // split code into sets of strings and numbers
-        let split = size.split(_unitsSplit);
+        let split = size.split(unitsSplit);
         if (split === null || !split.length) {
             return null;
         }
         let results = [],
             code = split.shift(),
-            isNumber = _unitsTest.test(code),
+            isNumber = unitsTest.test(code),
             num;
 
         while (true) {

@@ -113,15 +113,19 @@
             });
             expect(result).to.be.equal('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1.2em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 20" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"><g transform="rotate(-90 10 10)"><body /></g></svg>');
 
+            // also test "id" - should not be in result
             result = svg.getSVG({
-                rotate: '75%'
+                rotate: '75%',
+                id: 'test-id'
             });
             expect(result).to.be.equal('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1.2em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 20" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"><g transform="rotate(-90 10 10)"><body /></g></svg>');
 
+            // also test "id" - should be in result
             result = svg.getSVG({
-                flip: 'Horizontal'
-            });
-            expect(result).to.be.equal('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="0.84em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 24" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"><g transform="translate(20 0) scale(-1 1)"><body /></g></svg>');
+                flip: 'Horizontal',
+                id: 'test-id'
+            }, true);
+            expect(result).to.be.equal('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="test-id" width="0.84em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 24" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"><g transform="translate(20 0) scale(-1 1)"><body /></g></svg>');
 
             result = svg.getSVG({
                 flip: 'ignored, Vertical space-works-as-comma'
