@@ -343,7 +343,7 @@ class SVG {
             svg += attr += ': ' + data.style[attr] + '; ';
         });
         svg += '-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);';
-        if (props.style !== void 0) {
+        if (props && props.style !== void 0) {
             svg += props.style;
         }
         svg += '">';
