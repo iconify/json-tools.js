@@ -55,7 +55,7 @@
                 height: '100%',
                 inline: 'true'
             });
-            expect(result).to.be.equal('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="71.43%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 -2 20 28" style="vertical-align: -0.125em; -ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"><path d="whatever" fill="currentColor" /></svg>');
+            expect(result).to.be.equal('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="71.43%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 -2 20 28" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg); vertical-align: -0.125em;"><path d="whatever" fill="currentColor" /></svg>');
         });
 
         it('custom alignment', () => {
