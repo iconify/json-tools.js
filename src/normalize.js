@@ -19,6 +19,17 @@ const defaultAttributes = {
     vFlip: false
 };
 
+/**
+ * Add missing properties to icon
+ *
+ * Important: in PHP version of this library this function is part of Collection class: Collection::addMissingAttributes()
+ *
+ * JavaScript version uses separate file so this function could be used in React and other components without loading
+ * entire Collection class.
+ *
+ * @param {object} data
+ * @return {object}
+ */
 module.exports = function(data) {
     let item = Object.assign({}, defaultAttributes, data);
     if (item.inlineTop === void 0) {
