@@ -89,7 +89,7 @@ class SVG {
     getAttributes(props) {
         let item = this._item;
         if (typeof props !== 'object') {
-            props = {};
+            props = Object.create(null);
         }
 
         // Set data
@@ -103,9 +103,9 @@ class SVG {
             hFlip: item.hFlip,
             vFlip: item.vFlip
         };
-        let style = {};
+        let style = Object.create(null);
 
-        let attributes = {};
+        let attributes = Object.create(null);
 
         // Get width/height
         let inline = props.inline === true || props.inline === 'true' || props.inline === '1';
@@ -360,8 +360,8 @@ class SVG {
      */
     static splitAttributes(props) {
         let result = {
-            icon: {},
-            node: {}
+            icon: Object.create(null),
+            node: Object.create(null)
         };
 
         Object.keys(props).forEach(name => {

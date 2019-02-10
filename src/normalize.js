@@ -31,7 +31,7 @@ const defaultAttributes = {
  * @return {object}
  */
 module.exports = function(data) {
-    let item = Object.assign({}, defaultAttributes, data);
+    let item = Object.assign(Object.create(null), defaultAttributes, data);
     if (item.inlineTop === void 0) {
         item.inlineTop = item.top;
     }

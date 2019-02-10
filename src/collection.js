@@ -46,7 +46,7 @@ class Collection {
     constructor(prefix) {
         this.items = typeof prefix === 'string' ? {
             prefix: prefix,
-            icons: {}
+            icons: Object.create(null)
         } : null;
     }
 
@@ -100,7 +100,7 @@ class Collection {
         props.forEach(prop => {
             let maxCount = 0,
                 maxValue = false,
-                counters = {};
+                counters = Object.create(null);
 
             for (let i = 0; i < icons.length; i++) {
                 let item = json.icons[icons[i]];
@@ -243,14 +243,14 @@ class Collection {
                 sliceLength = prefixLength + 1,
                 test1 = prefix + ':',
                 test2 = prefix.indexOf('-') !== -1 ? null : prefix + '-',
-                BreakException = {};
+                BreakException = Object.create(null);
 
             // Remove prefix from all icons and aliases
             for (const prop of ['icons', 'aliases']) {
                 if (data[prop] === void 0) {
                     continue;
                 }
-                let newItems = {},
+                let newItems = Object.create(null),
                     keys = Object.keys(data[prop]);
 
                 for (const key of keys) {
@@ -332,8 +332,8 @@ class Collection {
         } else {
             this._result = {
                 prefix: this.items.prefix,
-                icons: {},
-                aliases: {}
+                icons: Object.create(null),
+                aliases: Object.create(null)
             };
             this._addDefaultValues(this._result);
 
@@ -394,7 +394,7 @@ class Collection {
      */
     getIconData(name, normalized) {
         if (this.items.icons[name] !== void 0) {
-            let data = Object.assign({}, this.items.icons[name]);
+            let data = Object.assign(Object.create(null), this.items.icons[name]);
             this._addDefaultValues(data);
             return normalized === false ? data : normalize(data);
         }
@@ -403,7 +403,7 @@ class Collection {
         if (this.items.aliases === void 0 || this.items.aliases[name] === void 0) {
             return null;
         }
-        this._result = Object.assign({}, this.items.aliases[name]);
+        this._result = Object.assign(Object.create(null), this.items.aliases[name]);
 
         let parent = this.items.aliases[name].parent,
             iteration = 0;
@@ -411,7 +411,7 @@ class Collection {
         while (iteration < 5) {
             if (this.items.icons[parent] !== void 0) {
                 // Merge with icon
-                let icon = Object.assign({}, this.items.icons[parent]);
+                let icon = Object.assign(Object.create(null), this.items.icons[parent]);
                 this._addDefaultValues(icon);
                 this._mergeIcon(icon);
                 return normalized === false ? this._result : normalize(this._result);
@@ -536,7 +536,7 @@ class Collection {
         if (typeof data !== 'object' || data.body === void 0) {
             return false;
         }
-        return this._add(name, Object.assign({}, data), false);
+        return this._add(name, Object.assign(Object.create(null), data), false);
     }
 
     /**
@@ -549,12 +549,12 @@ class Collection {
      */
     addAlias(name, parent, data) {
         if (data === void 0) {
-            data = {};
+            data = Object.create(null);
         }
         if (typeof data !== 'object' || !this.iconExists(parent)) {
             return false;
         }
-        return this._add(name, Object.assign({}, data, {parent: parent}), true);
+        return this._add(name, Object.assign(Object.create(null), data, {parent: parent}), true);
     }
 
     /**
@@ -587,7 +587,7 @@ class Collection {
         }
 
         if (alias && this.items.aliases === void 0) {
-            this.items.aliases = {};
+            this.items.aliases = Object.create(null);
         }
         this.items[alias ? 'aliases' : 'icons'][name] = data;
         if (!alias && this.items.aliases) {
@@ -608,7 +608,7 @@ class Collection {
             return '';
         }
 
-        options = Object.assign({}, defaultScriptifyOptions, typeof options === 'object' ? options : {});
+        options = Object.assign(Object.create(null), defaultScriptifyOptions, typeof options === 'object' ? options : Object.create(null));
 
         // Get JSON data
         let json = this.getIcons(options.icons);

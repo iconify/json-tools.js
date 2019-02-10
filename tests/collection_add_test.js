@@ -44,6 +44,11 @@
                 hFlip: true
             })).to.be.equal(false);
 
+            // Test reserved word
+            expect(collection.addAlias('constructor', 'foo', {
+                vFlip: true
+            })).to.be.equal(true);
+
             // Get JSON data
             expect(collection.getIcons()).to.be.eql({
                 prefix: 'test-prefix',
@@ -66,6 +71,10 @@
                     bar3: {
                         parent: 'bar2',
                         hFlip: true
+                    },
+                    constructor: {
+                        parent: 'foo',
+                        vFlip: true
                     }
                 }
             });
