@@ -36,8 +36,7 @@
             expect(icon).to.be.equal(null);
 
             // Test alias
-            icon = collection.getIconData('arrow-circle-right');
-            expect(icon).to.be.eql({
+            let expected = {
                 // data from alias
                 "hFlip": true,
                 "parent": "arrow-circle-left",
@@ -53,7 +52,14 @@
                 rotate: 0,
                 left: 0,
                 top: 0
-            });
+            };
+
+            icon = collection.getIconData('arrow-circle-right');
+            expect(icon).to.be.eql(expected);
+
+            // Test character
+            icon = collection.getIconData('f0a9');
+            expect(icon).to.be.eql(expected);
         });
     });
 })();

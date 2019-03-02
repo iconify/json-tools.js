@@ -30,7 +30,8 @@
                 body: '<bar />'
             })).to.be.equal(true);
             expect(collection.addIcon('baz', {
-                body: '<baz />'
+                body: '<baz />',
+                char: 'f0a0'
             })).to.be.equal(true);
 
             // Add aliases
@@ -38,10 +39,12 @@
                 rotate: 1
             })).to.be.equal(true);
             expect(collection.addAlias('bar3', 'bar2', {
-                hFlip: true
+                hFlip: true,
+                char: 'f0a1'
             })).to.be.equal(true);
             expect(collection.addAlias('foo2', 'foo1', {
-                hFlip: true
+                hFlip: true,
+                char: 'f0a2'
             })).to.be.equal(false);
 
             // Test reserved word
@@ -76,6 +79,10 @@
                         parent: 'foo',
                         vFlip: true
                     }
+                },
+                chars: {
+                    f0a0: 'baz',
+                    f0a1: 'bar3'
                 }
             });
 

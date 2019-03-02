@@ -276,6 +276,22 @@ class Collection {
                 }
                 data[prop] = newItems;
             }
+
+            // Remove prefix from characters
+            if (data.chars !== void 0) {
+                let keys = Object.keys(data.chars);
+                for (let char in keys) {
+                    let item = data.chars[char],
+                        test = item.slice(0, sliceLength);
+
+                    if (test !== test1 && test !== test2) {
+                        return false;
+                    }
+
+                    data.chars[char] = item.slice(sliceLength);
+                }
+            }
+
             data.prefix = prefix;
         }
 
@@ -355,10 +371,14 @@ class Collection {
         if (iteration > 5 || this._result.icons[name] !== void 0 || this._result.aliases[name] !== void 0) {
             return true;
         }
+
+        // Icon
         if (this.items.icons[name] !== void 0) {
             this._result.icons[name] = this.items.icons[name];
             return true;
         }
+
+        // Alias
         if (this.items.aliases && this.items.aliases[name] !== void 0) {
             if (!this._copy(this.items.aliases[name].parent, iteration + 1)) {
                 return false;
@@ -366,6 +386,19 @@ class Collection {
             this._result.aliases[name] = this.items.aliases[name];
             return true;
         }
+
+        // Character - return as alias
+        if (this.items.chars !== void 0 && this.items.chars[name] !== void 0) {
+            if (!this._copy(this.items.chars[name], iteration + 1)) {
+                return false;
+            }
+            this._result.aliases[name] = {
+                parent: this.items.chars[name]
+            };
+            return true;
+        }
+
+        // Not found
         return false;
     }
 
@@ -400,6 +433,10 @@ class Collection {
 
         // Alias
         if (this.items.aliases === void 0 || this.items.aliases[name] === void 0) {
+            // Character
+            if (this.items.chars !== void 0 && this.items.chars[name] !== void 0) {
+                return this.getIconData(this.items.chars[name], normalized);
+            }
             return null;
         }
         this._result = Object.assign(Object.create(null), this.items.aliases[name]);
@@ -583,6 +620,14 @@ class Collection {
     _add(name, data, alias) {
         if (this.items === null) {
             return false;
+        }
+
+        if (data.char !== void 0) {
+            if (this.items.chars === void 0) {
+                this.items.chars = Object.create(null);
+            }
+            this.items.chars[data.char] = name;
+            delete data.char;
         }
 
         if (alias && this.items.aliases === void 0) {
