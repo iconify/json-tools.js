@@ -242,18 +242,17 @@ class Collection {
             let prefixLength = prefix.length,
                 sliceLength = prefixLength + 1,
                 test1 = prefix + ':',
-                test2 = prefix.indexOf('-') !== -1 ? null : prefix + '-',
-                BreakException = Object.create(null);
+                test2 = prefix.indexOf('-') !== -1 ? null : prefix + '-';
 
             // Remove prefix from all icons and aliases
-            for (const prop of ['icons', 'aliases']) {
+            for (let prop of ['icons', 'aliases']) {
                 if (data[prop] === void 0) {
                     continue;
                 }
                 let newItems = Object.create(null),
                     keys = Object.keys(data[prop]);
 
-                for (const key of keys) {
+                for (let key of keys) {
                     // Verify that icon has correct prefix, return false on error
                     let item = data[prop][key],
                         test = key.slice(0, sliceLength);
@@ -519,7 +518,7 @@ class Collection {
                     list.push(key);
                 }
             });
-            for (const key of list) {
+            for (let key of list) {
                 this.removeIcon(key, true);
             }
         }
