@@ -112,7 +112,7 @@ if (!collection.loadJSON(data, 'custom-icons')) {
 
 #### loadIconifyCollection()
 
-This function loads Iconify collection from [@iconify/json](https://github.com/iconify-design/collections-json) repository.
+This function loads Iconify collection from [@iconify/json](https://github.com/iconify/collections-json) repository.
 
 Parameters:
 * name - name of collection
@@ -331,7 +331,7 @@ let prefix = collection.prefix();
 
 #### findIconifyCollection()
 
-This function locates Iconify collection from [@iconify/json](https://github.com/iconify-design/collections-json) repository.
+This function locates Iconify collection from [@iconify/json](https://github.com/iconify/collections-json) repository.
 
 Parameters:
 * name - Name of collection.
