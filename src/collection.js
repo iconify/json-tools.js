@@ -334,9 +334,10 @@ class Collection {
      * Get icons data (ready to be saved as JSON)
      *
      * @param {Array|null} [icons]
+     * @param {boolean} [notFound] True if "not_found" field should be added for missing icons
      * @returns {object|null}
      */
-    getIcons(icons) {
+    getIcons(icons, notFound) {
         if (this.items === null) {
             return null;
         }
@@ -352,7 +353,14 @@ class Collection {
             };
             this._addDefaultValues(this._result);
 
-            icons.forEach(icon => this._copy(icon, 0));
+            icons.forEach(icon => {
+                if (!this._copy(icon, 0) && notFound) {
+                    if (this._result.not_found === void 0) {
+                        this._result.not_found = [];
+                    }
+                    this._result.not_found.push(icon);
+                }
+            });
             result = this._result;
         }
 
