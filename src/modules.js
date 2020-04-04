@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-"use strict";
+'use strict';
 
 module.exports = {
-    Collection: require('./collection'),
-    Normalize: require('./normalize'),
-    SVG: require('./svg')
+	Collection: require('./collection'),
+	Normalize: require('./normalize'),
+	SVG: require('./svg'),
 };

@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-"use strict";
+'use strict';
 
 const defaultAttributes = {
-    left: 0,
-    top: 0,
-    width: 16,
-    height: 16,
-    rotate: 0,
-    hFlip: false,
-    vFlip: false
+	left: 0,
+	top: 0,
+	width: 16,
+	height: 16,
+	rotate: 0,
+	hFlip: false,
+	vFlip: false,
 };
 
 /**
@@ -31,17 +31,18 @@ const defaultAttributes = {
  * @return {object}
  */
 module.exports = function(data) {
-    let item = Object.assign(Object.create(null), defaultAttributes, data);
-    if (item.inlineTop === void 0) {
-        item.inlineTop = item.top;
-    }
-    if (item.inlineHeight === void 0) {
-        item.inlineHeight = item.height;
-    }
-    if (item.verticalAlign === void 0) {
-        // -0.143 if icon is designed for 14px height,
-        // otherwise assume icon is designed for 16px height
-        item.verticalAlign = item.height % 7 === 0 && item.height % 8 !== 0 ? -0.143 : -0.125;
-    }
-    return item;
+	let item = Object.assign(Object.create(null), defaultAttributes, data);
+	if (item.inlineTop === void 0) {
+		item.inlineTop = item.top;
+	}
+	if (item.inlineHeight === void 0) {
+		item.inlineHeight = item.height;
+	}
+	if (item.verticalAlign === void 0) {
+		// -0.143 if icon is designed for 14px height,
+		// otherwise assume icon is designed for 16px height
+		item.verticalAlign =
+			item.height % 7 === 0 && item.height % 8 !== 0 ? -0.143 : -0.125;
+	}
+	return item;
 };
