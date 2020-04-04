@@ -29,9 +29,8 @@ const defaultScriptifyOptions = {
 	// Array of icons to get
 	icons: null,
 
-	// JavaScript callback function. Default callback uses SimpleSVG instead of Iconify for backwards compatibility
-	// with Iconify 1.0.0-beta6 (that used to be called SimpleSVG) and older versions.
-	callback: 'SimpleSVG.addCollection',
+	// JavaScript callback function.
+	callback: 'Iconify.addCollection',
 
 	// True if result should be optimized for smaller file size
 	optimize: false,
@@ -76,12 +75,12 @@ class Collection {
 	 * @param data
 	 */
 	static deOptimize(data) {
-		Object.keys(data).forEach(prop => {
+		Object.keys(data).forEach((prop) => {
 			switch (typeof data[prop]) {
 				case 'number':
 				case 'boolean':
 					let value = data[prop];
-					Object.keys(data.icons).forEach(key => {
+					Object.keys(data.icons).forEach((key) => {
 						if (data.icons[key][prop] === void 0) {
 							data.icons[key][prop] = value;
 						}
@@ -108,7 +107,7 @@ class Collection {
 		}
 
 		// Check all attributes
-		props.forEach(prop => {
+		props.forEach((prop) => {
 			let maxCount = 0,
 				maxValue = false,
 				counters = Object.create(null);
@@ -146,7 +145,7 @@ class Collection {
 			if (maxCount > 1) {
 				// Remove duplicate values
 				json[prop] = maxValue;
-				icons.forEach(key => {
+				icons.forEach((key) => {
 					if (json.icons[key][prop] === maxValue) {
 						delete json.icons[key][prop];
 					}
@@ -167,11 +166,7 @@ class Collection {
 			// Get default prefix from filename
 			defaultPrefix =
 				defaultPrefix === void 0
-					? file
-							.split(/[\\/]/)
-							.pop()
-							.split('.')
-							.shift()
+					? file.split(/[\\/]/).pop().split('.').shift()
 					: defaultPrefix;
 
 			// Load file
@@ -201,11 +196,7 @@ class Collection {
 			// Get default prefix from filename
 			defaultPrefix =
 				defaultPrefix === void 0
-					? file
-							.split(/[\\/]/)
-							.pop()
-							.split('.')
-							.shift()
+					? file.split(/[\\/]/).pop().split('.').shift()
 					: defaultPrefix;
 
 			// Load file
@@ -378,7 +369,7 @@ class Collection {
 			};
 			this._addDefaultValues(this._result);
 
-			icons.forEach(icon => {
+			icons.forEach((icon) => {
 				if (!this._copy(icon, 0) && notFound) {
 					if (this._result.not_found === void 0) {
 						this._result.not_found = [];
@@ -446,7 +437,7 @@ class Collection {
 	 * @private
 	 */
 	_addDefaultValues(data) {
-		Object.keys(this.items).forEach(key => {
+		Object.keys(this.items).forEach((key) => {
 			if (
 				data[key] === void 0 &&
 				(typeof this.items[key] === 'boolean' ||
@@ -511,7 +502,7 @@ class Collection {
 	 * @private
 	 */
 	_mergeIcon(data) {
-		Object.keys(data).forEach(key => {
+		Object.keys(data).forEach((key) => {
 			if (this._result[key] === void 0) {
 				this._result[key] = data[key];
 				return;
@@ -598,7 +589,7 @@ class Collection {
 		// Check aliases
 		if (checkAliases !== false && this.items.aliases !== void 0) {
 			let list = [];
-			Object.keys(this.items.aliases).forEach(key => {
+			Object.keys(this.items.aliases).forEach((key) => {
 				if (this.items.aliases[key].parent === icon) {
 					list.push(key);
 				}
