@@ -164,7 +164,7 @@ Returns:
 ```js
 let data = collection.getIconData('arrow-left');
 let svg = new SVG(data);
-containerNode.innerHTML = svg.getSVG();
+containerNode.innerHTML = svg.getSVG({});
 ```
 
 #### getIcons()
@@ -442,7 +442,7 @@ const { SVG, Collection } = require('@iconify/json-tools');
 let collection = new Collection();
 collection.loadIconifyCollection('mdi');
 let svg = new SVG(collection.getIconData('home'));
-console.log(svg.getSVG());
+console.log(svg.getSVG({}));
 ```
 
 `getSVG()` has one parameter: custom properties object. Possible object attributes:
