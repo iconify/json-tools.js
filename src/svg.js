@@ -130,7 +130,7 @@ class SVG {
 		};
 
 		// Transformations
-		['hFlip', 'vFlip'].forEach(key => {
+		['hFlip', 'vFlip'].forEach((key) => {
 			if (
 				props[key] !== void 0 &&
 				(props[key] === true || props[key] === 'true' || props[key] === '1')
@@ -142,7 +142,7 @@ class SVG {
 			props.flip
 				.toLowerCase()
 				.split(/[\s,]+/)
-				.forEach(value => {
+				.forEach((value) => {
 					switch (value) {
 						case 'horizontal':
 							transform.hFlip = !transform.hFlip;
@@ -297,7 +297,7 @@ class SVG {
 			props.align
 				.toLowerCase()
 				.split(/[\s,]+/)
-				.forEach(value => {
+				.forEach((value) => {
 					switch (value) {
 						case 'left':
 						case 'right':
@@ -366,6 +366,10 @@ class SVG {
 	 * @returns {string}
 	 */
 	getSVG(props, addExtra) {
+		if (props === void 0) {
+			props = {};
+		}
+
 		let attributes = SVG.splitAttributes(props),
 			data = this.getAttributes(attributes.icon);
 
@@ -374,20 +378,20 @@ class SVG {
 
 		// Add extra attributes - assume that their names and values are escaped
 		if (addExtra) {
-			Object.keys(attributes.node).forEach(attr => {
+			Object.keys(attributes.node).forEach((attr) => {
 				svg += ' ' + attr + '="' + attributes.node[attr] + '"';
 			});
 		}
 
 		// Add SVG attributes
-		Object.keys(data.attributes).forEach(attr => {
+		Object.keys(data.attributes).forEach((attr) => {
 			svg += ' ' + attr + '="' + data.attributes[attr] + '"';
 		});
 
 		// Add style with 360deg transformation to style to prevent subpixel rendering bug
 		svg +=
 			' style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);';
-		Object.keys(data.style).forEach(attr => {
+		Object.keys(data.style).forEach((attr) => {
 			svg += ' ' + attr + ': ' + data.style[attr] + ';';
 		});
 		if (props && props.style !== void 0) {
@@ -412,7 +416,7 @@ class SVG {
 			node: Object.create(null),
 		};
 
-		Object.keys(props).forEach(name => {
+		Object.keys(props).forEach((name) => {
 			result[iconAttributes.indexOf(name) === -1 ? 'node' : 'icon'][name] =
 				props[name];
 		});
@@ -512,7 +516,7 @@ class SVG {
 			'-';
 
 		// Replace with unique ids
-		ids.forEach(function(id) {
+		ids.forEach(function (id) {
 			let newID = prefix + idCounter;
 			idCounter++;
 			body = strReplace('="' + id + '"', '="' + newID + '"', body);
