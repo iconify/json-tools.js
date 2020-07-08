@@ -15,7 +15,7 @@
 		"test": "mocha tests/*_test.js"
 	},
 	"devDependencies": {
-		"@iconify/json": "^1.1.178",
+		"@iconify/json": "^1.1.185",
 		"chai": "^4.2.0",
 		"mocha": "^5.2.0"
 	}
