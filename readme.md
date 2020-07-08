@@ -70,7 +70,7 @@ Returns:
 ```js
 let collection = new Collection();
 if (!collection.loadFromFile('json/custom-icons.json')) {
-    console.error('Failed to load custom-icons.json';
+	console.error('Failed to load custom-icons.json');
 }
 ```
 
@@ -379,7 +379,7 @@ Returns:
 ```js
 console.log(
 	'fa-solid.json can be found at',
-	colleciton.findIconifyCollection('fa-solid')
+	Colleciton.findIconifyCollection('fa-solid')
 );
 ```
 
@@ -393,7 +393,7 @@ Function parameters:
 - `props` - an optional array of properties to optimize. If not set, default properties list will be used.
 
 ```js
-let data = collection.getIcons();
+let data = JSON.parse(JSON.stringify(collection.getIcons()));
 Collection.optimize(data);
 ```
 
@@ -453,10 +453,10 @@ console.log(svg.getSVG({}));
 - `flip` - alternative to "hFlip" and "vFlip", string. Value can be "horizontal", "vertical" or "horizontal,vertical"
 - `rotate` - rotation. Value can be in degrees "90deg" (only 90, 180 and 270 rotations are available), percentages "25%" (25%, 50% and 75% are aliases of 90deg, 180deg and 270deg) or number 1-3 (1 - 90deg, 2 - 180deg, 3 - 270deg).
 - `align` - alignment. This is useful if you have custom width and height set. Unlike other images, SVG keep aspect ratio (unless stated otherwise) when scaled. Value is comma or space separated string with possible strings (example: "left,top,crop"):
-  ** `left`, `right`, `center` - horizontal alignment
-  ** `top`, `middle`, `bottom` - vertical alignment
-  ** `crop` - crop parts that go outside of boundaries
-  ** `meet` - scale icon down to fit entire icon (opposite of crop)
+  - `left`, `right`, `center` - horizontal alignment
+  - `top`, `middle`, `bottom` - vertical alignment
+  - `crop` - crop parts that go outside of boundaries
+  - `meet` - scale icon down to fit entire icon (opposite of crop)
 - `color` - custom color string to replace currentColor. This is useful when using icon as background image because background image cannot use currentColor
 - `box` - if true or "true" or "1" (string or boolean), icon will include extra rectangle matching its view box. This is useful to export icon to editor making icon easier to scale or place into its position in sketch because often editors ignore viewBox.
 
