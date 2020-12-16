@@ -388,18 +388,19 @@ class SVG {
 			svg += ' ' + attr + '="' + data.attributes[attr] + '"';
 		});
 
-		// Add style with 360deg transformation to style to prevent subpixel rendering bug
-		svg +=
-			' style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);';
+		// Add style
+		let style = '';
 		Object.keys(data.style).forEach((attr) => {
-			svg += ' ' + attr + ': ' + data.style[attr] + ';';
+			style += ' ' + attr + ': ' + data.style[attr] + ';';
 		});
 		if (props && props.style !== void 0) {
-			svg += props.style;
+			style += props.style;
 		}
-		svg += '">';
+		if (style !== '') {
+			svg += ' style="' + style.trim() + '"';
+		}
 
-		svg += data.body + '</svg>';
+		svg += '>' + data.body + '</svg>';
 
 		return svg;
 	}
